@@ -525,7 +525,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   O2Gage: {fileID: 1767197411}
-  items: []
+  items:
+  - {fileID: 1390224627}
+  - {fileID: 1042534749}
+  - {fileID: 1402262886}
 --- !u!4 &497537138
 Transform:
   m_ObjectHideFlags: 0
@@ -822,7 +825,12 @@ MonoBehaviour:
   - {fileID: 1707798417}
   - {fileID: 1941131007}
   player: {fileID: 1051503855}
-  item: {fileID: 3857414295890849074, guid: cc62ce930b03eef4ab431438f71c6c73, type: 3}
+  items:
+  - {fileID: 3857414295890849074, guid: cc62ce930b03eef4ab431438f71c6c73, type: 3}
+  - {fileID: 4422453398943545903, guid: a05479d5e57b18d4f84944d8ffa659a2, type: 3}
+  - {fileID: 8298953659274050896, guid: 22e5bc742e961634783712b5ad78d711, type: 3}
+  - {fileID: 614564729909655208, guid: 5fbdc8c6ff1be13499e4eb170cc86040, type: 3}
+  - {fileID: 827452600995868995, guid: d9bfc78e0f0372544922d9977725a14b, type: 3}
 --- !u!4 &772052917
 Transform:
   m_ObjectHideFlags: 0

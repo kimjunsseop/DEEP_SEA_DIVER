@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         O2 = MaxO2;
         InitializeInventory();
-        
+        UIManager.instance.Initialized();
     }
     void Update()
     {
@@ -129,6 +129,7 @@ public class Player : MonoBehaviour
         }
         if(collision.CompareTag("Monster"))
         {
+            O2 -= 30f;
             StartCoroutine(Shake());
         }
     }
