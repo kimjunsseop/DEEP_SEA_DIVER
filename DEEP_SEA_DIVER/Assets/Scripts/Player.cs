@@ -1,17 +1,30 @@
+using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     Animator anim;
-    public float Speed {get;set;}
+    [field:SerializeField] public float Speed {get;set;}
     private bool isBreathing = false;
     public Dictionary<int, bool> inventory = new Dictionary<int, bool>();
     public int inventorySize = 3;
+    private Item nearBy;
+    [Header("O2")]
+
+    [field:SerializeField] public float O2Dwoun {get;set;}
+    [field:SerializeField] public float O2Up {get;set;}
+    private float O2;
+    private float MaxO2 = 100f;
+    
     void Start()
     {
-        Speed = 3f;
         anim = GetComponent<Animator>();
+        O2 = MaxO2;
+        InitializeInventory();
         
     }
     void Update()
@@ -21,6 +34,35 @@ public class Player : MonoBehaviour
         
         SetAnim(h,v);
         transform.Translate(new Vector3(h,v,0) * Speed * Time.deltaTime);
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(nearBy != null)
+            {
+                if(inventory.ContainsKey(nearBy.itemType))
+                {
+                    inventory[nearBy.itemType] = true;
+                    nearBy.Pickuped();
+                    nearBy = null;
+                }
+            }
+        }
+        if(isBreathing)
+        {
+            if(O2 >= MaxO2)
+            {
+                O2 = MaxO2;
+            }
+            else
+            {
+                O2 += O2Up * Time.deltaTime;
+            }
+        }
+        else
+        {
+            O2 -= O2Dwoun * Time.deltaTime;
+        }
+        UIManager.instance.SetPercent(O2);
     }
     void FixedUpdate()
     {
@@ -82,12 +124,12 @@ public class Player : MonoBehaviour
         }
         if(collision.CompareTag("Item"))
         {
-            // ui 활성화
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                inventory[collision.GetComponent<Item>().itemType] = true;
-                collision.GetComponent<Item>().Pickuped();
-            }
+            // ui 활성화 SetActive(true)
+            nearBy = collision.GetComponent<Item>();
+        }
+        if(collision.CompareTag("Monster"))
+        {
+            StartCoroutine(Shake());
         }
     }
     void OnTriggerExit2D(Collider2D collision)
@@ -95,6 +137,20 @@ public class Player : MonoBehaviour
         if(collision.CompareTag("SaftyZone"))
         {
             isBreathing = false;
+        }
+        if(collision.CompareTag("Item"))
+        {
+            nearBy = null;
+        }
+    }
+    IEnumerator Shake()
+    {
+        int count = 5;
+        while(count > 0)
+        {
+            count--;
+            CameraImpulse.instance.Shake();
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
