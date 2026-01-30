@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 7048996307443944219, guid: a2e9d1fcc37603440a83be3ef4e80c33, type: 3}
-  itemType: 4
+  itemType: 1
 --- !u!50 &2194912054948137778
 Rigidbody2D:
   serializedVersion: 5

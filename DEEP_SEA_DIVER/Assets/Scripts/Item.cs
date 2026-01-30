@@ -6,7 +6,6 @@ public class Item : MonoBehaviour
     public int itemType;
     void Start()
     {
-        
     }
 
     void Update()
@@ -16,7 +15,7 @@ public class Item : MonoBehaviour
 
     public void Pickuped()
     {
-        UIManager.instance.changeAlpha(this);
+        UIManager.instance.changeAlpha(this.itemType);
         Destroy(gameObject);
     }
 }

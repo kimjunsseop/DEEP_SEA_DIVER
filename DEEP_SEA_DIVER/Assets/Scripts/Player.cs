@@ -10,11 +10,8 @@ public class Player : MonoBehaviour
     Animator anim;
     [field:SerializeField] public float Speed {get;set;}
     private bool isBreathing = false;
-    public Dictionary<int, bool> inventory = new Dictionary<int, bool>();
-    public int inventorySize = 3;
     private Item nearBy;
     [Header("O2")]
-
     [field:SerializeField] public float O2Dwoun {get;set;}
     [field:SerializeField] public float O2Up {get;set;}
     private float O2;
@@ -24,8 +21,7 @@ public class Player : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         O2 = MaxO2;
-        InitializeInventory();
-        UIManager.instance.Initialized();
+        //UIManager.instance.Initialized();
     }
     void Update()
     {
@@ -39,9 +35,8 @@ public class Player : MonoBehaviour
         {
             if(nearBy != null)
             {
-                if(inventory.ContainsKey(nearBy.itemType))
+                if(UIManager.instance.itemss.ContainsKey(nearBy.itemType))
                 {
-                    inventory[nearBy.itemType] = true;
                     nearBy.Pickuped();
                     nearBy = null;
                 }
@@ -62,6 +57,7 @@ public class Player : MonoBehaviour
         {
             O2 -= O2Dwoun * Time.deltaTime;
         }
+        GameManager.instance.endTime += Time.deltaTime;
         UIManager.instance.SetPercent(O2);
     }
     void FixedUpdate()
@@ -102,20 +98,6 @@ public class Player : MonoBehaviour
             anim.SetBool("Down", false);
         }
     }
-    public void InitializeInventory()
-    {
-        for(int i = 0; i < inventorySize; i++)
-        {
-            int rand = Random.Range(0, 3);
-            if(inventory.ContainsKey(rand))
-            {
-                i--;
-               continue; 
-            }
-            inventory.Add(rand, false);
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("SaftyZone"))
@@ -131,6 +113,13 @@ public class Player : MonoBehaviour
         {
             O2 -= 30f;
             StartCoroutine(Shake());
+        }
+        if(collision.CompareTag("Finish"))
+        {
+            if(GameManager.instance.Check())
+            {
+                SceneController.instance.EndGame();
+            }
         }
     }
     void OnTriggerExit2D(Collider2D collision)

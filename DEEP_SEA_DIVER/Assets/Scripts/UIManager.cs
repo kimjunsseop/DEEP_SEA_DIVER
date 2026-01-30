@@ -34,15 +34,17 @@ public class UIManager : MonoBehaviour
     {
         Item item1 = item.GetComponent<Item>();
         items[index].sprite = item1.sprite;
+        items[index].color = new Color(items[index].color.r, items[index].color.g, items[index].color.b, 0.5f);
     }
 
-    public void changeAlpha(Item item)
+    public void changeAlpha(int type)
     {
         for(int i = 0; i < items.Length; i++)
         {
-            if(item.itemType == itemss[i].GetComponent<Item>().itemType)
+            if(itemss[type].GetComponent<Item>().sprite == items[i].sprite)
             {
                 items[i].color = new Color(items[i].color.r, items[i].color.g, items[i].color.b, 1f);
+                GameManager.instance.Change(i);
             }
         }
     }
